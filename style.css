@@ -1,0 +1,25 @@
+*{
+    border: 1px solid red;
+}
+
+body{
+    margin: 0;
+    color: white; 
+    background-color: #F2ACC6;
+    /* display: flex;
+    flex-direction: column; */
+    overflow: hidden !important;
+}
+
+canvas{
+    z-index: -3;
+    height: 100vh !important;
+    width: 100vw !important;
+    position: absolute;
+    overflow: hidden !important;
+}
+
+#sea{
+    position: absolute;
+    z-index: -2;
+}
