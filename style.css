@@ -11,15 +11,21 @@ body{
     overflow: hidden !important;
 }
 
-canvas{
+/* canvas{
     z-index: -3;
     height: 100vh !important;
     width: 100vw !important;
     position: absolute;
     overflow: hidden !important;
-}
+} */
 
 #sea{
     position: absolute;
     z-index: -2;
+}
+
+#sphere3d{
+    z-index: -1;
+    height: 500px;
+    width: 500px;
 }
