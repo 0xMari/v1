@@ -3,10 +3,13 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 const scene = new THREE.Scene();
-scene.background = null
+scene.background = null;
+
 const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
 camera.position.z = 3;
 camera.lookAt(0,0,0);
+
+const container = document.getElementById('prova');
 
 const renderer = new THREE.WebGLRenderer({ alpha: true });
 renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -17,7 +20,6 @@ const controls = new OrbitControls(camera, renderer.domElement);
 //controls.enabled = true;
 
 
-const container = document.getElementById('prova');
 
 
 // const ambientLight = new THREE.AmbientLight( 0xffffff, 1000);
