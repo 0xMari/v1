@@ -11,13 +11,14 @@ body{
     overflow: hidden !important;
 }
 
-/* canvas{
-    z-index: -3;
-    height: 100vh !important;
-    width: 100vw !important;
-    position: absolute;
-    overflow: hidden !important;
-} */
+.elem3d{
+    display: flex;
+    /* align-items: center; */
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+
+}
 
 #sea{
     position: absolute;
@@ -28,5 +29,11 @@ body{
     z-index: -1;
     height: 30vh;
     width: 30vh;
-    
+    align-self: center;
+}
+
+#nav{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
