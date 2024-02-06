@@ -14,6 +14,7 @@ camera.lookAt(0,0,0);
 
 const renderer = new THREE.WebGLRenderer({ alpha: true });
 const controls = new OrbitControls(camera, renderer.domElement);
+controls.enabled = false;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 
 const container = document.getElementById('sphere3d')
@@ -28,36 +29,11 @@ const dirLight = new THREE.DirectionalLight( 0xffc4fa, 30 );
 dirLight.position.set( 10, 10, 10 );
 scene.add( dirLight );
 
-const options = {
-    transmission: 1,
-    thickness: 1,
-    roughness: 0,
-};
-
-
-
-
-
-
-// glass material
-const material = new THREE.MeshPhysicalMaterial({
-    transmission: options.transmission,
-    thickness: options.thickness,
-    roughness: options.roughness,
-  });
-
-
 
 // Load the 3D model
 const loader = new GLTFLoader();
 loader.load('./src/basta1.gltf', (gltf) => {
     const model = gltf.scene;
-    // const palla = model.children.find((mesh) => mesh.name === "Sphere.001");
-    // const geo = palla.geometry.clone();
-    
-
-    // const mesh = new THREE.Mesh(geo, material);
-    // scene.add(mesh);
 
     scene.add(model);
     
