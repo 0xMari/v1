@@ -37,3 +37,9 @@ body{
     flex-direction: row;
     justify-content: space-between;
 }
+
+#prova{
+    height: 30vh;
+    width: 30vh;
+    align-self: center;
+}
