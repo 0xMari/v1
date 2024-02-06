@@ -17,7 +17,7 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.enabled = false;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 
-const container = document.getElementById('sphere3d')
+const container = document.getElementById('sphere3d');
 
 renderer.setSize(container.offsetWidth, container.offsetHeight);
 
@@ -60,4 +60,5 @@ const animate = () => {
 };
 
 animate();
-document.getElementById('sphere3d').appendChild(renderer.domElement);
+
+container.appendChild(renderer.domElement);

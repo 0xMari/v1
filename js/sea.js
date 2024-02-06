@@ -21,6 +21,7 @@ export default class Sea{
         // this.renderer.outputColorSpace = THREE.SRGBColorSpace;
 
         this.container.appendChild(this.renderer.domElement);
+        console.log(this.container);
 
 
         this.init()
@@ -45,7 +46,6 @@ export default class Sea{
     
     setupRenderer(){
         this.renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(this.renderer.domElement);
     }
     
     setupCamera(){
