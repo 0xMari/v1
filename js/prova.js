@@ -2,13 +2,15 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { mergeVertices } from 'three/examples/jsm/utils/BufferGeometryUtils';
-
+import vertShader from '../public/src/Shader/vertex.js';
+import fragShader from '../public/src/Shader/fragment.js';
+import Time from './Time.js'
 
 const scene = new THREE.Scene();
 scene.background = null;
 
-const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
-camera.position.z = 3;
+const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 15);
+camera.position.z = 5;
 camera.lookAt(0,0,0);
 
 const container = document.getElementById('prova');
@@ -18,23 +20,26 @@ renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.setSize(container.clientWidth, container.clientHeight);
 
 
+// const controls = new OrbitControls(camera, renderer.domElement);
+// controls.enabled = true;
+
+
 const controls = new OrbitControls(camera, renderer.domElement);
-//controls.enabled = true;
-
-
-
 
 const ambientLight = new THREE.AmbientLight( 0xffffff, 100);
 ambientLight.position.set(0,2,0);
 scene.add( ambientLight );
 
-const directionalLight = new THREE.DirectionalLight( 0x00ffff, 50);
-directionalLight.position.set(10,-10,-10);
+const directionalLight = new THREE.DirectionalLight( 0x00ffff,100);
+directionalLight.position.set(1,0,5);
 scene.add(directionalLight);
 
+const time = new Time();
 
 
-const geometry = new THREE.SphereGeometry(1.2 , 64);
+const geometry = new THREE.SphereGeometry(1 , 512, 512);
+
+geometry.computeTangents();
 
 
 const material = new THREE.MeshPhysicalMaterial({
@@ -49,50 +54,50 @@ const material = new THREE.MeshPhysicalMaterial({
     metalness: 0.5,
     reflectivity: 0.5,
     ior: 2.3,
-    // wireframe: true,
+    wireframe: true,
     iridescence: 1,
     iridescenceIOR: 1.0,
 
 });
 
 
-const mesh = new THREE.Mesh(geometry, material);
+const mat = new THREE.ShaderMaterial({
+    uniforms: 
+    {
+        uTime : {value : 0 },
+        uDistortionFrequency : {value : 2.0},
+        uDistortionStrenght : {value : 1.0},
+        uDisplacementFrequency : {value : 2.0},
+        uDisplacementStrenght : {value : 0.2},
+        
+    },
+    defines : 
+    {
+        USE_TANGENT: '',
+    },
+    vertexShader: vertShader ,
+    fragmentShader: fragShader
+});
+
+function updateTime(){
+    mat.uniforms.uTime.value += time.delta * 0.0001;
+}
+
+
+const mesh = new THREE.Mesh(geometry, mat);
 mesh.position.set(0,0,0);
 
 scene.add(mesh);
 
-const geometry2 = new THREE.SphereGeometry(0.15);
-
-const material2 = new THREE.MeshPhysicalMaterial({
-    color: 0xf252c5,
-    roughness: 1,
-    opacity:1,
-    ior: 0.5,
-    reflectivity:0.5,
-});
-
-const mesh2 = new THREE.Mesh(geometry2, material2);
-mesh2.position.set(0,0,0);
-
-scene.add(mesh2);
-
-const geometry3 = new THREE.TorusKnotGeometry(0.65, 0.15, 64, 8, 2, 3);
-const material3 = new THREE.MeshPhysicalMaterial({
-    color: 0x211c1f,
-    roughness:0,
-    opacity:1,
-    ior: 0.5,
-    reflectivity: 0,
-    metalness: 0
-});
-
-const mesh3 = new THREE.Mesh(geometry3, material3);
-mesh3.position.set(0,0,0);
-
-scene.add(mesh3);
+function animate() {
+    requestAnimationFrame(animate);
+    controls.update(); // Call the update function
+    updateTime();
+    renderer.render(scene, camera);
+}
+animate();
 
 
 
-renderer.render(scene, camera);
 
 container.appendChild(renderer.domElement);

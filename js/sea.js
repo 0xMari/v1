@@ -16,12 +16,9 @@ export default class Sea{
         this.height = this.container.offsetHeight;
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
         this.renderer.setSize(this.width, this.height);
-        // this.renderer.setClearColor(0x000000, 1);
-        // this.renderer.physicallyCorrectLights = true;
-        // this.renderer.outputColorSpace = THREE.SRGBColorSpace;
 
         this.container.appendChild(this.renderer.domElement);
-        console.log(this.container);
+        
 
 
         this.init()
@@ -69,7 +66,6 @@ export default class Sea{
 
     setupEventListeners(){
         window.addEventListener('resize', () => this.handleResize());
-        // document.addEventListener('click', (event) => this.handleMouseClick(event));
     }
 
     handleResize(){
@@ -78,45 +74,6 @@ export default class Sea{
         this.renderer.setSize(window.innerWidth, window.innerHeight);
     }
 
-    // handleMouseClick(event){
-    //     const mouse = new THREE.Vector2();
-    //     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    //     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-    //     const raycaster = new THREE.Raycaster();
-    //     raycaster.setFromCamera(mouse, this.camera);
-
-    //     const intersects = raycaster.intersectObject(this.water);
-    //     if (intersects.length > 0) {
-    //         this.createRipples(intersects[0].point);
-    //     }
-    // }
-
-
-    // Function to create ripples
-    // createRipples = (position) => {
-    //     // Modify the water surface vertices based on the click position
-    //     console.log('aaaa');
-    //     const vertices = this.waterGeometry ? this.waterGeometry.attributes.position.array : [];
-    //     const radius = 1.5;
-
-    //     for (let i = 0; i < vertices.length; i+=3) {
-    //         // const distance = position.distanceTo(vertices[i]);
-    //         const vertex = new THREE.Vector3(vertices[i], vertices[i + 1], vertices[i + 2]);
-    //         const distance = position.distanceTo(vertex);
-
-    //         if (distance < radius) {
-    //             // Adjust the y-coordinate of the vertex based on the distance
-    //             const influence = 1 - distance / radius;
-    //             vertex.x += influence * 0.5;
-
-    //             this.waterGeometry.attributes.position.setXYZ(i / 3, vertex.x, vertex.y, vertex.z);
-    //         }
-    //     }
-
-    //     // Update the water geometry
-    //     this.waterGeometry.attributes.position.needsUpdate = true;
-    // }
 
     animate() {
         requestAnimationFrame(() => this.animate());
