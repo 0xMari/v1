@@ -14,7 +14,7 @@ export default class Microphone{
                 // console.log(_stream);
 
                 this.init()
-                this.update();
+                //this.update();
 
             })
         
@@ -55,7 +55,7 @@ export default class Microphone{
             return
 
         this.analyserNode.getFloatTimeDomainData(this.pcmData);
-        console.log(this.pcmData);
+        console.log(this.pcmData); 
 
         let sumSquares = 0.0;
         for (const amplitude of this.pcmData) {
