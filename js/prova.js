@@ -15,11 +15,17 @@ import { OutputPass } from 'three/addons/postprocessing/OutputPass';
 const scene = new THREE.Scene();
 scene.background = null;
 
-const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 15);
-camera.position.z = 5;
+const container = document.getElementById('prova');
+
+
+const camera = new THREE.PerspectiveCamera(50, (container.offsetWidth / container.offsetHeight), 0.1, 15);
+camera.position.z = 7;
 camera.lookAt(0,0,0);
 
-const container = document.getElementById('prova');
+const axesHelper = new THREE.AxesHelper( 5 );
+//axesHelper.setColors(THREE.Color('#ff0000'), THREE.Color('#00ff00'), THREE.Color('#0000ff'));
+scene.add( axesHelper );
+
 
 const renderer = new THREE.WebGLRenderer({ alpha: true });
 renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -41,8 +47,15 @@ let offset;
 
 const mic = new Microphone();
 
+const variations = {};
+variations.volume = {};
+variations.volume.target = 0;
+variations.volume.current = 0;
+variations.volume.inEase = 0.1;
+variations.volume.outEase = 0.01;
 
-const geometry = new THREE.SphereGeometry(1 , 512, 512);
+
+const geometry = new THREE.SphereGeometry(1 , 256, 256);
 
 geometry.computeTangents();
 
@@ -79,7 +92,7 @@ const mat = new THREE.ShaderMaterial({
         uDistortionFrequency : {value : 1.5 },
         uDistortionStrenght : {value : 0.6 },
         uDisplacementFrequency : {value : 2 },
-        uDisplacementStrenght : {value : 0.1 },
+        uDisplacementStrenght : {value : 0.033 },
         uLightAColor: {value : new THREE.Color('#f8a3f8') },
         uLightAPosition: {value : new THREE.Vector3(1, 1, 0)},
         uLightAIntensity : {value : 1 },
@@ -88,10 +101,8 @@ const mat = new THREE.ShaderMaterial({
         uLightBIntensity : {value : 1},
         uSubdivision : { value : new THREE.Vector2(geometry.parameters.widthSegments , geometry.parameters.heightSegments)},
         uFresnelOffset: {value : 0 },
-        uFresnelMultiplier: {value : 1.5},
+        uFresnelMultiplier: {value : 1.2},
         uFresnelPower: {value : 3.5 },
-        // uOffsetDirection : { value: offset.direction },
-        // uOffsetSpeed: {value : 1.0 },
         uOffset: {value : new THREE.Vector3() },
 
         
@@ -128,7 +139,7 @@ bloom.tintColor.value = '#4100ff';
 bloom.tintColor.instance = new THREE.Color(bloom.tintColor.value);
 
 bloom.compositeMaterial.uniforms.uTintColor = {value : bloom.tintColor.instance};
-bloom.compositeMaterial.uniforms.uTintStrenght = {value : 0.2};
+bloom.compositeMaterial.uniforms.uTintStrenght = {value : 0.0};
 
 bloom.compositeMaterial.fragmentShader = `
 varying vec2 vUv;
@@ -157,7 +168,7 @@ void main() {
         lerpBloomFactor(bloomFactors[4]) * vec4(bloomTintColors[4], 1.0) * texture2D(blurTexture5, vUv) );
 
     color.rgb = mix(color.rgb, uTintColor , uTintStrenght ); //tint all over the scene
-    gl_FragColor = color;
+    gl_FragColor = vec4(color.rgb, 0.0);
 }`
 
 
@@ -168,6 +179,17 @@ const outputPass = new OutputPass();
 composer.addPass(outputPass);
 
 function update(){
+
+    // audio variation on distortion strenght
+    variations.volume.target = mic.volume;
+    
+    const easing = variations.volume.target > variations.volume.current ? variations.volume.inEase : variations.volume.outEase;
+    variations.volume.current += (variations.volume.target - variations.volume.current) * easing;
+
+    mat.uniforms.uDisplacementStrenght.value = Math.max(0.03, variations.volume.current); 
+
+
+
     const offsetTime = time.elapsed * 0.3;
     offset.spherical.phi = (( (Math.sin(offsetTime * 0.001)) * (Math.sin(offsetTime * 0.00321)) )* 0.5 + 0.5 ) * Math.PI;
     offset.spherical.theta = (( (Math.sin(offsetTime * 0.0001)) * (Math.sin(offsetTime * 0.000321)) )* 0.5 + 0.5 ) * Math.PI * 2;
@@ -176,6 +198,9 @@ function update(){
 
     mat.uniforms.uOffset.value.add(offset.direction);
     mat.uniforms.uTime.value += time.delta * 0.0002;
+
+    
+
 }
 
 // animation
@@ -183,7 +208,10 @@ function update(){
 function animate() {
     requestAnimationFrame(animate);
     controls.update(); // Call the update function
+    mic.update();
+
     update();
+    
     
     renderer.render(scene, camera);
     composer.render();

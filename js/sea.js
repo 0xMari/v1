@@ -87,18 +87,19 @@ export default class Sea{
     
     createWater(){
         const water = new Water(this.waterGeometry, {
-            waterColor: 0x66aaff,
+            waterColor: 0x0040ff,
+            sunColor: 0xffffff,
             scale: 1,
-            flowDirection: new THREE.Vector2(0, 0),
+            flowDirection: new THREE.Vector2(0, -10),
             textureWidth: 512,
             textureHeight: 512,
-            waterNormals: new THREE.TextureLoader().load( './imgs/Water_1_M_Normal.jpg', function(texture){
+            waterNormals: new THREE.TextureLoader().load( './imgs/water_0342normal.jpg', function(texture){
                 texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
             } ),
             distortionScale: 20,
-            alpha: 1
+            alpha: 0.75,
         });
-        water.rotation.x = - Math.PI / 2;
+        water.rotation.x = -Math.PI / 2;
         this.scene.add(water);
 
         return water;
@@ -107,7 +108,7 @@ export default class Sea{
     createScene(){
         const scene = new THREE.Scene();
         scene.background= new THREE.Color(0xFFDBFF);
-        scene.fog = new THREE.Fog( 0x74ccf4, 7, 25 );
+        //scene.fog = new THREE.Fog( 0x74ccf4, 7, 25 );
 
         return scene;
     };   

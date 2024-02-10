@@ -3,7 +3,7 @@ export default class Microphone{
     constructor(){
 
         this.ready = false;
-        this.volume = 0;
+        this.volume = 0.0 ;
 
         navigator.mediaDevices
             .getUserMedia({ audio : true, video: false})
@@ -44,7 +44,6 @@ export default class Microphone{
         this.mediaStreamSourceNode.connect(this.analyserNode);
         
         this.pcmData = new Float32Array(this.analyserNode.fftSize);
-        console.log(this.analyserNode.fftSize);
         
         this.ready = true;
     }
@@ -55,13 +54,19 @@ export default class Microphone{
             return
 
         this.analyserNode.getFloatTimeDomainData(this.pcmData);
-        console.log(this.pcmData); 
 
         let sumSquares = 0.0;
         for (const amplitude of this.pcmData) {
             sumSquares += amplitude * amplitude
         }
-        this.volume = Math.sqrt(sumSquares / this.pcmData.lenght);
-        console.log(volume);
+        let ciao = sumSquares / this.pcmData.length ;
+
+        // console.log(ciao);
+        // console.log(typeof(ciao));
+
+        this.volume = Math.sqrt( ciao );
+
+        // console.log(typeof(this.volume));
+        // console.log(this.volume);
     }
 }
