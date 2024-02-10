@@ -8,7 +8,7 @@ import Microphone from './Mic.js';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
-import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass';
+// import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass';
 
 
 
@@ -174,9 +174,9 @@ void main() {
 
 composer.addPass(bloom);
 
-const outputPass = new OutputPass();
+// const outputPass = new OutputPass();
 
-composer.addPass(outputPass);
+// composer.addPass(outputPass);
 
 function update(){
 
