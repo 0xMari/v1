@@ -6,12 +6,13 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 export default class Sea{
     constructor(options){
         this.scene = this.createScene();
-        this.camera = new THREE.PerspectiveCamera(70, window.innerWidth/window.innerHeight, 0.001, 1000);
+        this.container = document.getElementById('sea');
+        this.camera = new THREE.PerspectiveCamera(70, this.container.offsetWidth/this.container.offsetHeight, 0.001, 1000);
         this.renderer = new THREE.WebGLRenderer();
         this.waterGeometry = new THREE.PlaneGeometry(60, 60, 20, 20);
         this.water = this.createWater();
 
-        this.container = options.dom;
+        
         this.width = this.container.offsetWidth;
         this.height = this.container.offsetHeight;
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
@@ -69,9 +70,9 @@ export default class Sea{
     }
 
     handleResize(){
-        this.camera.aspect = window.innerWidth / window.innerHeight;
+        this.camera.aspect = container.innerWidth / container.innerHeight;
         this.camera.updateProjectionMatrix();
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.setSize(container.innerWidth, container.innerHeight);
     }
 
 
