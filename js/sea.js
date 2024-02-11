@@ -70,9 +70,9 @@ export default class Sea{
     }
 
     handleResize(){
-        this.camera.aspect = container.innerWidth / container.innerHeight;
+        this.camera.aspect = this.container.innerWidth / this.container.innerHeight;
         this.camera.updateProjectionMatrix();
-        this.renderer.setSize(container.innerWidth, container.innerHeight);
+        this.renderer.setSize(this.container.innerWidth, this.container.innerHeight);
     }
 
 
