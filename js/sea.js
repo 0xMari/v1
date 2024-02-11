@@ -53,7 +53,7 @@ export default class Sea{
 
     setupLights(){
         // Add light
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+        const directionalLight = new THREE.DirectionalLight(0xff00ff, 1);
         this.scene.add(directionalLight);
     }
 
@@ -89,7 +89,6 @@ export default class Sea{
     createWater(){
         const water = new Water(this.waterGeometry, {
             waterColor: 0x0040ff,
-            sunColor: 0xffffff,
             scale: 1,
             flowDirection: new THREE.Vector2(0, -10),
             textureWidth: 512,
@@ -109,6 +108,7 @@ export default class Sea{
     createScene(){
         const scene = new THREE.Scene();
         scene.background= new THREE.Color(0xFFDBFF);
+        // scene.background= new THREE.Color(0x000000);
         //scene.fog = new THREE.Fog( 0x74ccf4, 7, 25 );
 
         return scene;

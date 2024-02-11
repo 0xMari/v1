@@ -22,9 +22,9 @@ const camera = new THREE.PerspectiveCamera(50, (container.offsetWidth / containe
 camera.position.z = 7;
 camera.lookAt(0,0,0);
 
-const axesHelper = new THREE.AxesHelper( 5 );
+// const axesHelper = new THREE.AxesHelper( 5 );
 //axesHelper.setColors(THREE.Color('#ff0000'), THREE.Color('#00ff00'), THREE.Color('#0000ff'));
-scene.add( axesHelper );
+// scene.add( axesHelper );
 
 
 const renderer = new THREE.WebGLRenderer({ alpha: true });
@@ -168,7 +168,7 @@ void main() {
         lerpBloomFactor(bloomFactors[4]) * vec4(bloomTintColors[4], 1.0) * texture2D(blurTexture5, vUv) );
 
     color.rgb = mix(color.rgb, uTintColor , uTintStrenght ); //tint all over the scene
-    gl_FragColor = vec4(color.rgb, 0.0);
+    gl_FragColor = vec4(color.rgb, 0.95);
 }`
 
 
@@ -214,8 +214,7 @@ function animate() {
     
     
     renderer.render(scene, camera);
-    composer.render();
-    
+    composer.render();    
 }
 
 animate();
