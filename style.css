@@ -1,6 +1,9 @@
-*{
+@import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&display=swap');
+
+/*
+{
     border: 1px solid red;
-}
+}*/
 
 body{
     margin: 0;
@@ -12,6 +15,8 @@ body{
 
 #sea{
     position: absolute;
+    height: 100%;
+    width: 100%;
     z-index: -2;
 }
 
@@ -24,6 +29,9 @@ body{
     position: absolute;
     bottom: 3%;
     z-index: 0;
+    font-family: "Syncopate", sans-serif;
+    font-weight: 400;
+    font-size: 1.5rem;
 }
 
 #prova{

@@ -1,8 +1,17 @@
 import * as THREE from 'three';
 // import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import {RGBELoader} from 'three/examples/jsm/loaders/RGBELoader';
+
+
 import vertShader from '../public/src/Shader/vertex.js';
 import fragShader from '../public/src/Shader/fragment.js';
+
+import vertexPars from '../public/src/Shader/vertex_pars.glsl.js'
+import vertexMain from '../public/src/Shader/vertex_main.glsl.js'
+import fragmentPars from '../public/src/Shader/fragment_pars.glsl.js'
+import fragmentMain from '../public/src/Shader/fragment_main.glsl.js'
+
 import Time from './Time.js'
 import Microphone from './Mic.js';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
@@ -11,7 +20,7 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass';
 
 
-
+// set up
 const scene = new THREE.Scene();
 scene.background = null;
 
@@ -34,49 +43,110 @@ renderer.setSize(container.clientWidth, container.clientHeight);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
-// const ambientLight = new THREE.AmbientLight( 0xffffff, 100);
+// const ambientLight = new THREE.AmbientLight( 0xffffff, 0.5);
 // ambientLight.position.set(0,2,0);
 // scene.add( ambientLight );
 
-// const directionalLight = new THREE.DirectionalLight( 0x00ffff,100);
+// const directionalLight = new THREE.DirectionalLight( 0xffffff, 1);
 // directionalLight.position.set(1,0,5);
 // scene.add(directionalLight);
 
 const time = new Time();
 let offset;
 
-const mic = new Microphone();
+// const mic = new Microphone();
 
-const variations = {};
-variations.volume = {};
-variations.volume.target = 0;
-variations.volume.current = 0;
-variations.volume.inEase = 0.1;
-variations.volume.outEase = 0.01;
+// const variations = {};
+// variations.volume = {};
+// variations.volume.target = 0;
+// variations.volume.current = 0;
+// variations.volume.inEase = 0.1;
+// variations.volume.outEase = 0.01;
 
-
+//geometries
 const geometry = new THREE.SphereGeometry(1 , 256, 256);
 
 geometry.computeTangents();
 
 
-const material = new THREE.MeshPhysicalMaterial({
-    color: 0x4287f5,
-    specularColor: 0xffffff,
-    transparent: true,
-    opacity: 0.2,
-    emissive: 0xc646c8,
-    transmission: 1,
-    thickness: 1,
-    roughness: 0,
-    metalness: 0.5,
-    reflectivity: 0.5,
-    ior: 2.3,
-    wireframe: true,
-    iridescence: 1,
-    iridescenceIOR: 1.0,
+const ico = new THREE.IcosahedronGeometry(1, 200);
 
+const params = {
+    color: 0xffffff,
+    transmission: 1,
+    opacity: 1,
+    metalness: 0,
+    roughness: 0,
+    ior: 1.52,
+    thickness: 0.1,
+    specularIntensity: 1,
+    specularColor: 0xffffff,
+    lightIntensity: 1,
+    exposure: 1
+};
+
+const textureLoader = new THREE.TextureLoader();
+let textureEquirec;
+textureEquirec = textureLoader.load( '../imgs/holo.jpg' );
+textureEquirec.mapping = THREE.EquirectangularReflectionMapping;
+textureEquirec.colorSpace = THREE.SRGBColorSpace;
+
+
+const hdr = new RGBELoader().load( '../imgs/sepulchral_chapel_rotunda_2k.hdr' , function(){
+    hdr.mapping = THREE.EquirectangularReflectionMapping;
 });
+
+
+const material = new THREE.MeshPhysicalMaterial( {
+    onBeforeCompile: (shader) => {
+        material.userData.shader = shader;
+        shader.uniforms.uTime = {value : 0};
+
+
+        const parsVertexString = /* glsl */ `#include <displacementmap_pars_vertex>` ;
+        shader.vertexShader = shader.vertexShader.replace(
+            parsVertexString,
+            parsVertexString + vertexPars
+        );
+
+        const mainVertexString = /* glsl */ `#include <displacementmap_vertex>`;
+        shader.vertexShader = shader.vertexShader.replace(
+            mainVertexString,
+            mainVertexString + vertexMain
+        );
+
+        const mainFragmentString = /* glsl */ `#include <normal_fragment_maps>`;
+        const parsFragmentString = /* glsl */ `#include <bumpmap_pars_fragment>`;
+        shader.fragmentShader = shader.fragmentShader.replace(
+            parsFragmentString,
+            parsFragmentString + fragmentPars
+        );
+        shader.fragmentShader = shader.fragmentShader.replace(
+            mainFragmentString,
+            mainFragmentString + fragmentMain
+        );
+    },
+    color: params.color,
+    metalness: params.metalness,
+    roughness: params.roughness,
+    ior: params.ior,
+    transmission: params.transmission,
+    specularIntensity: params.specularIntensity,
+    specularColor: params.specularColor,
+    opacity: params.opacity,
+    side: THREE.DoubleSide,
+    envMap: hdr,
+} );
+
+
+
+scene.background = hdr;
+
+// scene.background = new THREE.Color(0x000000);
+
+const sf = new THREE.Mesh(ico, material);
+
+scene.add(sf);
 
 
 offset = {};
@@ -121,7 +191,7 @@ const mat = new THREE.ShaderMaterial({
 const mesh = new THREE.Mesh(geometry, mat);
 mesh.position.set(0,0,0);
 
-scene.add(mesh);
+//scene.add(mesh);
 
 // post-process
 
@@ -172,7 +242,7 @@ void main() {
 }`
 
 
-composer.addPass(bloom);
+//composer.addPass(bloom);
 
 const outputPass = new OutputPass();
 
@@ -181,25 +251,25 @@ composer.addPass(outputPass);
 function update(){
 
     // audio variation on distortion strenght
-    variations.volume.target = mic.volume;
+    // variations.volume.target = mic.volume;
     
-    const easing = variations.volume.target > variations.volume.current ? variations.volume.inEase : variations.volume.outEase;
-    variations.volume.current += (variations.volume.target - variations.volume.current) * easing;
+    // const easing = variations.volume.target > variations.volume.current ? variations.volume.inEase : variations.volume.outEase;
+    // variations.volume.current += (variations.volume.target - variations.volume.current) * easing;
 
-    mat.uniforms.uDisplacementStrenght.value = Math.max(0.03, variations.volume.current); 
+    // mat.uniforms.uDisplacementStrenght.value = Math.max(0.03, variations.volume.current); 
 
 
 
-    const offsetTime = time.elapsed * 0.3;
-    offset.spherical.phi = (( (Math.sin(offsetTime * 0.001)) * (Math.sin(offsetTime * 0.00321)) )* 0.5 + 0.5 ) * Math.PI;
-    offset.spherical.theta = (( (Math.sin(offsetTime * 0.0001)) * (Math.sin(offsetTime * 0.000321)) )* 0.5 + 0.5 ) * Math.PI * 2;
-    offset.direction.setFromSpherical(offset.spherical);
-    offset.direction.multiplyScalar(0.01);
+    // const offsetTime = time.elapsed * 0.3;
+    // offset.spherical.phi = (( (Math.sin(offsetTime * 0.001)) * (Math.sin(offsetTime * 0.00321)) )* 0.5 + 0.5 ) * Math.PI;
+    // offset.spherical.theta = (( (Math.sin(offsetTime * 0.0001)) * (Math.sin(offsetTime * 0.000321)) )* 0.5 + 0.5 ) * Math.PI * 2;
+    // offset.direction.setFromSpherical(offset.spherical);
+    // offset.direction.multiplyScalar(0.01);
 
-    mat.uniforms.uOffset.value.add(offset.direction);
-    mat.uniforms.uTime.value += time.delta * 0.0002;
-
+    // mat.uniforms.uOffset.value.add(offset.direction);
+    // mat.uniforms.uTime.value += time.delta * 0.0002;
     
+    //mate.userData.shader.uniforms.uTime.value += time.delta * 0.0002;
 
 }
 
@@ -208,13 +278,13 @@ function update(){
 function animate() {
     requestAnimationFrame(animate);
     controls.update(); // Call the update function
-    mic.update();
+    //mic.update();
 
-    update();
+    //update();
     
     
     renderer.render(scene, camera);
-    composer.render();    
+    //composer.render();    
 }
 
 animate();
