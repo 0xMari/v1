@@ -1,5 +1,5 @@
-import startApp from './glass';
-import {loading} from './init';
+import startApp from './glass.js';
+import {loading} from './init.js';
 
 (async () =>{
     await loading()
