@@ -8,7 +8,7 @@ float pattern = wave(noisePattern + uTime);
 vDisplacement = pattern;
 
 
-float displacement = vDisplacement / 30.0;
+float displacement = vDisplacement / 300.0;
 
 transformed += normalize(objectNormal) * displacement;
 

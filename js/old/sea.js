@@ -8,7 +8,7 @@ export default class Sea{
         this.scene = this.createScene();
         this.container = document.getElementById('sea');
         this.camera = new THREE.PerspectiveCamera(70, this.container.offsetWidth/this.container.offsetHeight, 0.001, 1000);
-        this.renderer = new THREE.WebGLRenderer();
+        this.renderer = new THREE.WebGLRenderer({alpha: true});
         this.waterGeometry = new THREE.PlaneGeometry(60, 60, 20, 20);
         this.water = this.createWater();
 

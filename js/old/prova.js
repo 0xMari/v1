@@ -4,13 +4,13 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import {RGBELoader} from 'three/examples/jsm/loaders/RGBELoader';
 
 
-import vertShader from '../public/src/Shader/vertex.js';
-import fragShader from '../public/src/Shader/fragment.js';
+import vertShader from '../../public/src/Shader/vertex.js';
+import fragShader from '../../public/src/Shader/fragment.js';
 
-import vertexPars from '../public/src/Shader/vertex_pars.glsl.js'
-import vertexMain from '../public/src/Shader/vertex_main.glsl.js'
-import fragmentPars from '../public/src/Shader/fragment_pars.glsl.js'
-import fragmentMain from '../public/src/Shader/fragment_main.glsl.js'
+import vertexPars from '../../public/src/Shader/vertex_pars.glsl.js'
+import vertexMain from '../../public/src/Shader/vertex_main.glsl.js'
+import fragmentPars from '../../public/src/Shader/fragment_pars.glsl.js'
+import fragmentMain from '../../public/src/Shader/fragment_main.glsl.js'
 
 import Time from './Time.js'
 import Microphone from './Mic.js';

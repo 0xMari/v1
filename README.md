@@ -1,8 +1,7 @@
 # 0xMari.github.io
 
 TO DO
-- audio input on sphere: music
-- set sphere material to transparent glass
+- music?
 - loading animation
 - optimization
 - navigation menu
