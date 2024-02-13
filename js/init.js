@@ -58,8 +58,8 @@ export const loading = async () => {
 
   //gui = new GUI()
 
-  controls = new OrbitControls(camera, renderer.domElement)
-  controls.enableDamping = true
+  // controls = new OrbitControls(camera, renderer.domElement)
+  // controls.enableDamping = true
 
   window.addEventListener(
     'resize',
