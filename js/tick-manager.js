@@ -42,7 +42,7 @@ class TickManager extends EventTarget {
 
             // performance tracker start
 
-            controls.update();
+            //controls.update();
 
             composer.render();
             // renderer.render(scene, camera);
