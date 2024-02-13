@@ -21,7 +21,7 @@ const startApp = () => {
 
 //const scene = createScene();
 const scene = useScene();
-const container = document.getElementById('prova');
+const container = document.getElementById('scene');
 //const camera = new THREE.PerspectiveCamera(50, (container.offsetWidth / container.offsetHeight), 0.1, 15);
 const camera = useCamera();
 //const time = new Time();

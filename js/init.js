@@ -23,7 +23,7 @@ export const loading = async () => {
   scene.background= new THREE.Color(0xFFDBFF)
 
 
-  const container = document.getElementById('prova');
+  const container = document.getElementById('scene');
 
   renderWidth = window.innerWidth
   renderHeight = window.innerHeight
