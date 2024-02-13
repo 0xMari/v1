@@ -31,7 +31,7 @@ export const loading = async () => {
   renderAspectRatio = renderWidth / renderHeight
 
   camera = new THREE.PerspectiveCamera(50, renderAspectRatio, 0.1, 15);
-  camera.position.z = 3
+  camera.position.z = 3.5
 
   renderer = new THREE.WebGLRenderer({ antialias: true , alpha: true})
   renderer.setSize(renderWidth, renderHeight)
