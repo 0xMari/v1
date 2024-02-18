@@ -88,7 +88,7 @@ const material = new THREE.MeshPhysicalMaterial({
 });
 
 const loader = new GLTFLoader();
-loader.load("./src/demon.gltf", (gltf) => {
+loader.load("../public/src/demon.gltf", (gltf) => {
     const demon = gltf.scene;
     
     demon.scale.x = demon.scale.y = demon.scale.z = 2.3;
