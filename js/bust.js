@@ -85,7 +85,7 @@ loader.load("../public/src/demon.gltf", (gltf) => {
     
     demon.scale.x = demon.scale.y = demon.scale.z = 3;
     demon.position.y= - 3;
-    demon.rotation.y = Math.PI / 2 ;
+    demon.rotation.y = 3 * Math.PI / 4  ;
 
     demon.traverse( ( child ) => {
         if ( child instanceof THREE.Mesh ) {
@@ -111,8 +111,8 @@ function animate() {
     scrollRotObj();   
 };
 
-let currentTimeline = window.scrollY / 3000; 
-let aimTimeline = window.scrollY / 3000;
+let currentTimeline = window.scrollY / 300; 
+let aimTimeline = window.scrollY / 300;
 
 function scrollRotObj (){
     // if(scene){ 
@@ -126,7 +126,7 @@ function scrollRotObj (){
     // }
     currentTimeline += (aimTimeline - currentTimeline) * 0.01;
 
-    const ry = (currentTimeline)* Math.PI * 2;
+    const ry = (currentTimeline)* Math.PI;
     const pos = currentTimeline * 2;
 
     scene.rotation.set(0, -ry, 0);

@@ -10,7 +10,7 @@ body{
     color: white; 
     background-color: #000000;
     /* overflow: hidden !important; */
-    min-height: calc(3000px + 100vh);
+    min-height: calc(300vh+ 100vh);
     
 }
 
@@ -124,5 +124,5 @@ body{
 #sec3{
     align-self: flex-end;
     margin-top: 30%;
-    margin-bottom: 10%;
+    margin-bottom: 25%;
 }
