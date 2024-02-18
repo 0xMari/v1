@@ -4,6 +4,8 @@ TO DO
 - music?
 - loading animation
 - optimization
+    - loading time
+    - mobile
 - navigation menu
 
 
