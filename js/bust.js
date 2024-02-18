@@ -26,7 +26,8 @@ const container = document.getElementById('test');
 const camera = useCamera();
 const renderer = useRenderer();
 const controls = new OrbitControls(camera, renderer.domElement);
-controls.enabled = true;
+// controls.enabled = true;
+controls.enabled = false;
 
 const { width, height } = useRenderSize()
 
@@ -45,16 +46,7 @@ function setupLights(){
 
 
 
-function animate() {
-    requestAnimationFrame(() => animate());
-    //sphere rotation
-    // const time = Date.now() * 0.0007;
-    // sphere.rotation.y = time;
-    // sphere.rotation.z = 0.5* ( 1 +  Math.sin( time ) );
 
-
-    
-};
 
 
 function setupTexture(){
@@ -91,8 +83,8 @@ const loader = new GLTFLoader();
 loader.load("../public/src/demon.gltf", (gltf) => {
     const demon = gltf.scene;
     
-    demon.scale.x = demon.scale.y = demon.scale.z = 2.3;
-    demon.position.y=-1.8;
+    demon.scale.x = demon.scale.y = demon.scale.z = 3;
+    demon.position.y= - 3;
     demon.rotation.y = Math.PI / 2 ;
 
     demon.traverse( ( child ) => {
@@ -104,18 +96,43 @@ loader.load("../public/src/demon.gltf", (gltf) => {
         }
     })
     
+    
+    
     scene.add(demon);
-    // return demon;
-
-    // Discard the loaded model
-    // gltf.scene.children.forEach((child) => {
-    //   child.geometry.dispose();
-    //   child.material.dispose();
-    // });
     
 });
 
+function animate() {
+    requestAnimationFrame(() => animate());
+    //sphere rotation
+    // const time = Date.now() * 0.0007;
+    // sphere.rotation.y = time;
+    // sphere.rotation.z = 0.5* ( 1 +  Math.sin( time ) ); 
+    scrollRotObj();   
+};
 
+let currentTimeline = window.scrollY / 3000; 
+let aimTimeline = window.scrollY / 3000;
+
+function scrollRotObj (){
+    // if(scene){ 
+    //     addEventListener('wheel', e => {
+    //         const delta = e.deltaY;
+    //         //console.log(delta);
+    //         scene.rotation.y = (- delta / 100) * 2 * Math.PI ;
+    //         console.log(scene.rotation.y);
+            
+    //     })
+    // }
+    currentTimeline += (aimTimeline - currentTimeline) * 0.01;
+
+    const ry = (currentTimeline)* Math.PI * 2;
+    const pos = currentTimeline * 2;
+
+    scene.rotation.set(0, -ry, 0);
+    scene.position.set(0, pos, 0);
+
+};
 
 
 const renderTargetParameters = {
@@ -140,6 +157,9 @@ function init(){
 
 
     animate();
+    window.addEventListener('scroll', function(){
+        aimTimeline = window.scrollY / 3000;
+    })
 }
 
 init();
