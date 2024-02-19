@@ -26,7 +26,7 @@ class TickManager extends EventTarget {
         const scene = useScene();
         const camera = useCamera();
         const controls = useControls();
-        const stats = useStats();
+        //const stats = useStats();
 
         if (!renderer) {
             throw new Error('Updating Frame Failed : Uninitialized Renderer');
@@ -49,7 +49,7 @@ class TickManager extends EventTarget {
 
             this.tick(timestamp, timeDiffCapped, frame);
 
-            stats.update();
+            //stats.update();
 
             // performance tracker end
         };

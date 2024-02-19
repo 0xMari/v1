@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&display=swap');
+
+/*
+{
+    border: 1px solid red;
+}*/
+
+body{
+    margin: 0;
+    color: white; 
+    background-color: #B091F2;
+    overflow: hidden !important;
+    font-family: "Syncopate", sans-serif;
+    font-weight: 400;
+}
+
+#nav{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: flex-end;
+    position: absolute;
+    bottom: 3%;
+    z-index: 0;
+    font-family: "Syncopate", sans-serif;
+    font-weight: 400;
+    font-size: 1.5rem;
+}
+
+#nav > a{
+    color: white;
+    text-decoration: none;
+}
+
+
+#text{
+    margin-top: 10%;
+    margin-left: 10%;
+
+}

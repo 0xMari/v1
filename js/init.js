@@ -53,8 +53,8 @@ export const loading = async () => {
   const renderPass = new RenderPass(scene, camera)
   composer.addPass(renderPass)
 
-  stats = Stats()
-  document.body.appendChild(stats.dom)
+  // stats = Stats()
+  // document.body.appendChild(stats.dom)
 
   //gui = new GUI()
 
