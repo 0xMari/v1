@@ -6,10 +6,10 @@ import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPa
 
 
 
-import vertexPars from '../public/src/Shader/vertex_pars.glsl.js'
-import vertexMain from '../public/src/Shader/vertex_main.glsl.js'
-import fragmentPars from '../public/src/Shader/fragment_pars.glsl.js'
-import fragmentMain from '../public/src/Shader/fragment_main.glsl.js'
+import vertexPars from '../public/src/Shader_noiseSphere/vertex_pars.glsl.js'
+import vertexMain from '../public/src/Shader_noiseSphere/vertex_main.glsl.js'
+import fragmentPars from '../public/src/Shader_noiseSphere/fragment_pars.glsl.js'
+import fragmentMain from '../public/src/Shader_noiseSphere/fragment_main.glsl.js'
 
 
 import { Water } from './old/Water.js';
@@ -19,43 +19,44 @@ import { addPass, useCamera, useGui, useRenderSize, useRenderer, useScene, useTi
 
 const startApp = () => {
 
-//const scene = createScene();
 const scene = useScene();
 const container = document.getElementById('scene');
 //const camera = new THREE.PerspectiveCamera(50, (container.offsetWidth / container.offsetHeight), 0.1, 15);
 const camera = useCamera();
-//const time = new Time();
-//const renderer = new THREE.WebGLRenderer({ alpha: true });
 const renderer = useRenderer();
-// const controls = new OrbitControls(camera, renderer.domElement);
-// controls.enabled = true;
 
-//const gui = useGui()
 const { width, height } = useRenderSize()
 
 const sphereGeometry = new THREE.IcosahedronGeometry(0.5, 200);
 const sphere = createSphere();
-//sphere.renderOrder = 10;
 
 
-const waterGeometry = new THREE.PlaneGeometry(60, 60, 20, 20);
+
+const waterGeometry = new THREE.PlaneGeometry(25, 20, 50, 50);
 const water = createWater();
 
-const testGeo = new THREE.PlaneGeometry(25,10);
-const testMat = new THREE.MeshBasicMaterial( {color: 0xFFDBff, side: THREE.DoubleSide} );
+const testGeo = new THREE.PlaneGeometry(25,15);
+const testMat = new THREE.MeshPhysicalMaterial( {
+    color: 0xB091F2,
+    side: THREE.DoubleSide,
+    roughness: 0,
+    ior: 2.33,
+    envMap: setupTexture()
+} );
 const testPlane = new THREE.Mesh( testGeo, testMat );
 testPlane.position.z = -10;
 testPlane.position.y = 0;
 
 
-
-
-
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enabled = true;
 
 
 function setupLights(){
     // Add light
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
+    scene.add(ambientLight);
+    const directionalLight = new THREE.DirectionalLight(0xFFDBFF, 0.5);
     scene.add(directionalLight);
 };
 
@@ -78,8 +79,7 @@ function animate() {
     sphere.rotation.z = 0.5* ( 1 +  Math.sin( time ) );
 
 
-    // Render the scene
-    //renderer.render(scene, camera);
+    
 };
 
 
@@ -98,7 +98,7 @@ function setupTexture(){
     return textureEquirec;
 };
 
-// Water
+
 
 function createSphere(){
     
@@ -179,27 +179,14 @@ function createWater(){
         } ),
         distortionScale: 20,
         alpha: 0.15,
+        envMap: setupTexture(),
         
     });
     water.rotation.x = -Math.PI / 2;
-    //water.rotation.x = - ((80 * Math.PI)/180);
     water.position.y = -1;
-    // scene.add(water);
 
     return water;
 };
-
-function createScene(){
-    const scene = new THREE.Scene();
-    scene.background= new THREE.Color(0xFFDBFF);
-    //scene.background= new THREE.Color(0x000000);
-
-    // scene.background = setupTexture();
-    //scene.background = null;
-    //scene.fog = new THREE.Fog( 0x74ccf4, 7, 25 );
-
-    return scene;
-};   
 
 const renderTargetParameters = {
     minFilter: THREE.LinearFilter,
@@ -217,11 +204,8 @@ useTick(({ timestamp, timeDiff }) => {
 
 
 function init(){
-    // setupRenderer();
-    // setupCamera();
     setupLights();
-    // setupControls();
-    // setupEventListeners();
+
     scene.add(testPlane);
     scene.add(sphere);
     scene.add(water);
