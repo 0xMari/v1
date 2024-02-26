@@ -4,6 +4,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import {RGBELoader} from 'three/examples/jsm/loaders/RGBELoader';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 
 
 
@@ -115,7 +116,12 @@ const startApp = () => {
     toro.rotation.x = Math.PI/2;
 
     const loader = new GLTFLoader();
-    loader.load("../public/src/bubbletext.glb", (gltf) => {
+
+    const dracoLoader = new DRACOLoader();
+    dracoLoader.setDecoderPath( './js/draco/' );
+    loader.setDRACOLoader( dracoLoader );
+
+    loader.load("../public/src/btext.glb", (gltf) => {
         const text = gltf.scene;
         text.position.x = 0.04;
         text.position.z = -5;
@@ -148,6 +154,8 @@ const startApp = () => {
     });
 
     const loader2 = new GLTFLoader();
+
+    
     loader2.load("../public/src/torustest1.glb", (gltf) => {
         const torus = gltf.scene.children[0];
         torus.position.x = 0;
