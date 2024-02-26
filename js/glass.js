@@ -48,8 +48,8 @@ testPlane.position.z = -10;
 testPlane.position.y = 0;
 
 
-const controls = new OrbitControls(camera, renderer.domElement);
-controls.enabled = true;
+// const controls = new OrbitControls(camera, renderer.domElement);
+// controls.enabled = true;
 
 
 function setupLights(){
