@@ -4,6 +4,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import {RGBELoader} from 'three/examples/jsm/loaders/RGBELoader';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 
 
 
@@ -89,7 +90,11 @@ const startApp = () => {
     const group = new THREE.Group();
 
     const loader = new GLTFLoader();
-    loader.load("../public/src/demon.glb", (gltf) => {
+    const dracoLoader = new DRACOLoader();
+    dracoLoader.setDecoderPath( './js/draco/' );
+    loader.setDRACOLoader( dracoLoader );
+
+    loader.load("../public/src/output.glb", (gltf) => {
         const demon = gltf.scene;
         
         demon.scale.x = demon.scale.y = demon.scale.z = 3;
@@ -106,8 +111,13 @@ const startApp = () => {
                 child.receiveShadow = true
             }
         })
-        group.add(demon);        
-    });
+        group.add(demon); },
+        function ( xhr ) {
+
+            console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+    
+        }     
+    );
 
     function animate() {
         requestAnimationFrame(() => animate());
